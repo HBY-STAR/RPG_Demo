@@ -1691,6 +1691,7 @@ MonoBehaviour:
   spaceBetweenDots: 0.03
   dotPrefab: {fileID: 2188819637158026757, guid: 2cabe728ed1018943800a5482b232a15, type: 3}
   dotParent: {fileID: 616203099}
+  minAimDir: 0.5
 --- !u!1 &1064606976
 GameObject:
   m_ObjectHideFlags: 3

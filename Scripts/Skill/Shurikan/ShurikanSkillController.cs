@@ -63,24 +63,18 @@ public class ShurikanSkillController : MonoBehaviour
     {
         if (isReturning)
             return;
-        
+
         canRotate = false;
         cd.enabled = false;
         rb.isKinematic = true;
         
-
+        transform.localScale = Vector3.one;
         
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
         transform.localScale = Vector3.one;
-        
+
         transform.parent = collision.transform;
         
-        Vector2 movementDirection = transform.forward;
-
-        Vector2 velocityDirection = rb.velocity;
-
-        float depthOffset = -1.0f; // 根据需要调整深度偏移
-        transform.localPosition = new Vector3(velocityDirection.x, velocityDirection.y, depthOffset);
     }
 }

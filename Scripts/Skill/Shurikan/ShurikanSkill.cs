@@ -18,6 +18,7 @@ public class ShurikanSkill : Skill
     [SerializeField] private float spaceBetweenDots;
     [SerializeField] private GameObject dotPrefab;
     [SerializeField] private Transform dotParent;
+    [SerializeField] private float minAimDir;
 
     private GameObject[] dots;
 
@@ -62,7 +63,14 @@ public class ShurikanSkill : Skill
         Vector2 playerPosition = player.transform.position;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        return mousePosition - playerPosition;
+        Vector2 aimDir = mousePosition - playerPosition;
+
+        if (aimDir.y < minAimDir)
+        {
+            aimDir.y = minAimDir;
+        }
+
+        return aimDir;
     }
 
     public void DotsActive(bool isActive)
