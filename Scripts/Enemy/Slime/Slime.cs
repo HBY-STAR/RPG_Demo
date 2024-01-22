@@ -7,22 +7,22 @@ public class Slime : Enemy
     [Header("Player dectected")]
     [SerializeField] protected Transform playerCheck;
     [SerializeField] protected float playerCheckDistance;
-    [SerializeField] protected LayerMask whatIsPlayer;
+    [SerializeField] public LayerMask whatIsPlayer;
     
     [Header("Move info")]
     public float moveSpeed;
     public float jumpForce;
 
-    [Header("Attack info")] [SerializeField]
-    protected Transform attackCheck;
-    [SerializeField] protected float attackDistance;
+    [Header("Attack info")] 
+    [SerializeField] public Transform attackCheck;
+    [SerializeField] public float attackDistance;
     
     #region States
     public SlimeIdleState idleState { get; private set; }
     public SlimeMoveState moveState { get; private set; }
     public SlimeAttackState attackState { get; private set; }
-    
     public SlimeBattleState battleState { get; private set; }
+    public SlimeHitState hitState { get; private set; }
     
     #endregion
     
@@ -34,6 +34,7 @@ public class Slime : Enemy
         moveState = new SlimeMoveState(stateMachine, this, "Move", this);
         attackState = new SlimeAttackState(stateMachine, this, "Attack", this);
         battleState = new SlimeBattleState(stateMachine, this, "Move", this);
+        hitState = new SlimeHitState(stateMachine, this, "Hit", this);
     }
 
     protected override void Start()
@@ -46,6 +47,7 @@ public class Slime : Enemy
     protected override void Update()
     {
         base.Update();
+        
     }
     
     public bool IsPlayerDetected()
@@ -80,5 +82,20 @@ public class Slime : Enemy
 
         Gizmos.DrawWireSphere(playerCheck.position, playerCheckDistance);
         Gizmos.DrawWireSphere(attackCheck.position, attackDistance);
+    }
+
+    public override void OnDamage()
+    {
+        base.OnDamage();
+
+        if (stats.currentHeath < 0)
+            Die();
+        stateMachine.ChangeState(hitState);
+    }
+
+    private void Die()
+    {
+        cd.enabled = false;
+        stateMachine.ChangeState(idleState);
     }
 }

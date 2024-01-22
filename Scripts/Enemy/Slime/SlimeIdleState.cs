@@ -20,7 +20,7 @@ public class SlimeIdleState : EnemyState
         if(slime.IsWallDetected() || !slime.IsGroundDetected())
             slime.Flip();
 
-        startTimer = 2f;
+        startTimer = 3f;
     }
 
     public override void Update()

@@ -10,4 +10,17 @@ public class SlimeAnimator : MonoBehaviour
     {
         slime.AnimationTrigger();
     }
+    
+    private void AttackTrigger()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(slime.attackCheck.position, slime.attackDistance, slime.whatIsPlayer);
+
+        foreach (var hit in colliders)
+        {
+            if (hit.GetComponent<Player>() != null)
+            {
+                hit.GetComponent<CharacterStats>().TakeDamage(slime.stats.damage.GetValue());
+            }
+        }
+    }
 }

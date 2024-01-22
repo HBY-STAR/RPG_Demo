@@ -10,6 +10,20 @@ public class PlayerAnimator : MonoBehaviour
     {
         player.AnimationTrigger();
     }
+
+    private void AttackTrigger()
+    {
+        Collider2D[] playerColliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackDistance, player.whatIsEnemy);
+
+        foreach (var hit in playerColliders)
+        {
+            if (hit.GetComponent<Enemy>() != null)
+            {
+                hit.GetComponent<CharacterStats>().TakeDamage(player.stats.damage.GetValue());
+                hit.GetComponent<Enemy>().OnDamage();
+            }
+        }
+    }
     
     private void ThrowShurikan()
     {

@@ -14,6 +14,9 @@ public class ShurikanSkillController : MonoBehaviour
     private bool isReturning=false;
     private float returnSpeed = 30f;
     
+    private int shurikanDamage = 3;
+
+    
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
@@ -61,20 +64,33 @@ public class ShurikanSkillController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        CheckDamage(collision);
+        
         if (isReturning)
             return;
 
-        canRotate = false;
-        cd.enabled = false;
-        rb.isKinematic = true;
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            canRotate = false;
+            rb.isKinematic = true;
         
-        transform.localScale = Vector3.one;
+            transform.localScale = Vector3.one;
         
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
-        transform.localScale = Vector3.one;
+            transform.localScale = Vector3.one;
+        }
+    }
 
-        transform.parent = collision.transform;
-        
+    private void CheckDamage(Collider2D collision)
+    {
+        if (collision.GetComponent<Enemy>() != null)
+        {
+            if (rb.velocity.x != 0 || isReturning)
+            {
+                collision.GetComponent<CharacterStats>().TakeDamage(player.stats.damage.GetValue()*shurikanDamage);
+                collision.GetComponent<Enemy>().OnDamage();
+            }
+        }
     }
 }

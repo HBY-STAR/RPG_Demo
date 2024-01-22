@@ -9,6 +9,9 @@ public class Entity : MonoBehaviour
 
     public Animator animator { get; private set; }
     public Rigidbody2D rb { get; private set; }
+    
+    public Collider2D cd { get; private set; }
+    public CharacterStats stats { get; private set; }
 
     #endregion
     
@@ -22,6 +25,8 @@ public class Entity : MonoBehaviour
     public int facingDir { get; private set; } = 1;
     protected bool _facingRight = true;
 
+    public System.Action OnFilped;
+
     protected virtual void Awake()
     {
     }
@@ -30,6 +35,8 @@ public class Entity : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        cd = GetComponent<Collider2D>();
+        stats = GetComponent<CharacterStats>();
     }
 
     protected virtual void Update()
@@ -49,6 +56,8 @@ public class Entity : MonoBehaviour
         facingDir = facingDir * (-1);
         _facingRight = !_facingRight;
         transform.Rotate(0, 180, 0);
+        if(OnFilped != null)
+            OnFilped();
     }
 
     public virtual void FlipController(float x)

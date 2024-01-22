@@ -29,4 +29,9 @@ public class Enemy : Entity
     {
         stateMachine.currentState.AnimationFinished();
     }
+    
+    public virtual void OnDamage()
+    {
+        
+    }
 }

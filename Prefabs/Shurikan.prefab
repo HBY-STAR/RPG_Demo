@@ -72,7 +72,7 @@ TrailRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1925757181
-  m_SortingLayer: -2
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Time: 0.1
   m_Parameters:
@@ -297,7 +297,7 @@ TrailRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1925757181
-  m_SortingLayer: -2
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Time: 0.1
   m_Parameters:
@@ -437,7 +437,7 @@ TrailRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1925757181
-  m_SortingLayer: -2
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Time: 0.1
   m_Parameters:
@@ -608,7 +608,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: -0.004071474, y: 0.011325687}
   serializedVersion: 2
-  m_Radius: 0.2413969
+  m_Radius: 0.25
 --- !u!114 &1712472391359020400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,7 +728,7 @@ TrailRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1925757181
-  m_SortingLayer: -2
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Time: 0.1
   m_Parameters:

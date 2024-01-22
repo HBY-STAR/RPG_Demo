@@ -7,7 +7,11 @@ using UnityEngine.U2D.Animation;
 
 public class Player : Entity
 {
-    [Header("Attack info")] public Vector2[] attackMovement;
+    [Header("Attack info")] 
+    [SerializeField] public Vector2[] attackMovement;
+    [SerializeField] public Transform attackCheck;
+    [SerializeField] public float attackDistance;
+    [SerializeField] public LayerMask whatIsEnemy;
 
     [Header("Move info")] 
     public float moveSpeed = 4f;
@@ -189,5 +193,12 @@ public class Player : Entity
 
             stateMachine.ChangeState(dashState);
         }
+    }
+
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+        
+        Gizmos.DrawWireSphere(attackCheck.position, attackDistance);
     }
 }
