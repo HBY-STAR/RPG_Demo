@@ -28,4 +28,16 @@ public class CharacterStats : MonoBehaviour
          if(currentHeath<0)
              Debug.Log("I'm Die.");
     }
+
+    public virtual void Cure(int _cure)
+    {
+        currentHeath += _cure;
+        if (currentHeath > maxHeath.GetValue())
+        {
+            currentHeath = maxHeath.GetValue();
+        }
+        
+        if(OnHealthChanged != null)
+            OnHealthChanged();
+    }
 }

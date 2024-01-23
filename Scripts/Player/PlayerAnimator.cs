@@ -25,6 +25,20 @@ public class PlayerAnimator : MonoBehaviour
         }
     }
     
+    private void AirAttackTrigger()
+    {
+        Collider2D[] playerColliders = Physics2D.OverlapCircleAll(player.transform.position, player.airAttackDistance, player.whatIsEnemy);
+
+        foreach (var hit in playerColliders)
+        {
+            if (hit.GetComponent<Enemy>() != null)
+            {
+                hit.GetComponent<CharacterStats>().TakeDamage((int)(player.stats.damage.GetValue()*player.airAttackStrength));
+                hit.GetComponent<Enemy>().OnDamage();
+            }
+        }
+    }
+    
     private void ThrowShurikan()
     {
         SkillManager.Instance.shurikanSkill.CreateShurikan();

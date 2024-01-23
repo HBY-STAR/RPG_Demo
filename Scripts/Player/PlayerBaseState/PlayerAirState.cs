@@ -27,6 +27,8 @@ public class PlayerAirState : PlayerState
         if (xInput !=0 )
             player.SetVelocity(xInput*0.8f,rb.velocity.y);
         
+        if (Input.GetKeyDown(KeyCode.Mouse0) && player.canAirAttack)
+            playerStateMachine.ChangeState(player.airAttackState);
         
         if(player.IsWallDetected())
             playerStateMachine.ChangeState(player.wallSlideState);

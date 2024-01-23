@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Timers;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 
@@ -12,6 +13,10 @@ public class Player : Entity
     [SerializeField] public Transform attackCheck;
     [SerializeField] public float attackDistance;
     [SerializeField] public LayerMask whatIsEnemy;
+    [SerializeField] public float airAttackDistance;
+    [SerializeField] public float airAttackSpeed;
+    [SerializeField] public float airAttackStrength;
+    public bool canAirAttack;
 
     [Header("Move info")] 
     public float moveSpeed = 4f;
@@ -33,6 +38,8 @@ public class Player : Entity
     public PlayerAttackState attackState { get; private set; }
     public PlayerAimState aimState { get; private set; }
     public PlayerCatchState catchState { get; private set; }
+    
+    public PlayerAirAttackState airAttackState { get; private set; }
 
     #endregion
     
@@ -41,6 +48,8 @@ public class Player : Entity
     public TrailRenderer swordTrailRenderer { get; private set; }
     public Transform shurikan_image { get; private set; }
     public SpriteRenderer shurikan_image_sprite_render { get; private set; }
+    
+    public List<TrailRenderer> shurikan_image_trail = new List<TrailRenderer>();
     
     #endregion
 
@@ -60,6 +69,7 @@ public class Player : Entity
         attackState = new PlayerAttackState(stateMachine, this, "Attack");
         aimState = new PlayerAimState(stateMachine, this, "ShurikenAim");
         catchState = new PlayerCatchState(stateMachine, this, "ShurikenCatch");
+        airAttackState = new PlayerAirAttackState(stateMachine, this, "AirAttack");
     }
 
 
@@ -84,8 +94,14 @@ public class Player : Entity
         shurikan_image_sprite_render = shurikan_image.GetComponent<SpriteRenderer>();
         swordTrailRenderer = sword.GetComponentInChildren<TrailRenderer>();
 
+        for (int i = 0; i < shurikan_image.childCount; i++)
+        {
+            shurikan_image_trail.Add(shurikan_image.GetChild(i).GetComponentInChildren<TrailRenderer>());
+        }
+
         EnableShurikanImage();
         UnableSwordTrail();
+        UnableShurikanTrail();
 
         stateMachine.Initialize(idleState);
     }
@@ -145,14 +161,42 @@ public class Player : Entity
 
     public void EnableShurikanImage()
     {
-        if(shurikan_image_sprite_render)
+        if (shurikan_image_sprite_render)
+        {
             shurikan_image_sprite_render.enabled = true;
+            canAirAttack = true;
+        }
     }
     
     public void UnableShurikanImage()
     {
-        if(shurikan_image_sprite_render)
+        if (shurikan_image_sprite_render)
+        {
             shurikan_image_sprite_render.enabled = false;
+            canAirAttack = false;
+        }
+    }
+
+    public void EnableShurikanTrail()
+    {
+        if (shurikan_image_trail.Count == 4)
+        {
+            foreach (var trail in shurikan_image_trail)
+            {
+                trail.enabled = true;
+            }
+        }
+    }
+    
+    public void UnableShurikanTrail()
+    {
+        if (shurikan_image_trail.Count == 4)
+        {
+            foreach (var trail in shurikan_image_trail)
+            {
+                trail.enabled = false;
+            }
+        }
     }
 
     #endregion
@@ -200,5 +244,6 @@ public class Player : Entity
         base.OnDrawGizmos();
         
         Gizmos.DrawWireSphere(attackCheck.position, attackDistance);
+        Gizmos.DrawWireSphere(transform.position, airAttackDistance);
     }
 }

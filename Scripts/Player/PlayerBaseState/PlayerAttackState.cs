@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerAttackState : PlayerState
 {
     private int _comboCounter = 0 ;
-    private float _comboWindows = 0.3f;
+    private float _comboWindows = 0.4f;
     private float _lastTimeAttacked;
     
     public PlayerAttackState(PlayerStateMachine playerStateMachine, Player player, string ainmBoolName) : base(playerStateMachine, player, ainmBoolName)
@@ -19,7 +19,7 @@ public class PlayerAttackState : PlayerState
         
         player.EnableSwordTrail();
         
-        if (_comboCounter > 2 || Time.time > _comboWindows + _lastTimeAttacked)
+        if (_comboCounter > 4 || Time.time > _comboWindows + _lastTimeAttacked)
             _comboCounter = 0;
 
         float attackDir = player.facingDir;
@@ -42,7 +42,7 @@ public class PlayerAttackState : PlayerState
     {
         base.Update();
         
-        if (_comboCounter == 2)
+        if (_comboCounter == 4)
         {
             float attackDir = player.facingDir;
 
@@ -56,9 +56,11 @@ public class PlayerAttackState : PlayerState
             
             player.SetVelocity(player.attackMovement[_comboCounter].x*attackDir,player.attackMovement[_comboCounter].y);
         }
-        
-        if(triggerCalled)
+
+        if (triggerCalled)
+        {
             playerStateMachine.ChangeState(player.idleState);
+        }
     }
 
     public override void Exit()
@@ -69,7 +71,7 @@ public class PlayerAttackState : PlayerState
         _comboCounter++;
         _lastTimeAttacked = Time.time;
 
-        player.StartCoroutine("BusyFor", 0.2f);
+        player.StartCoroutine("BusyFor", 0.1f);
         
         base.Exit();
         
