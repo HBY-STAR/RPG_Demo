@@ -30,7 +30,7 @@ public class SlimeBattleState : EnemyState
         
         slime.animator.SetFloat("yVelocity",rb.velocity.y);
         
-        if (((rb.velocity.y == 0) && triggerCalled) || slime.IsWallDetected())
+        if (triggerCalled && slime.IsGroundDetected())
         {
             if(slime.CanAttack())
                 enemyStateMachine.ChangeState(slime.attackState);

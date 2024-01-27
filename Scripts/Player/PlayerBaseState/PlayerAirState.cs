@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAirState : PlayerState
 {
+    private bool jumpOnce;
     public PlayerAirState(PlayerStateMachine playerStateMachine, Player player, string ainmBoolName) : base(playerStateMachine, player, ainmBoolName)
     {
     }
@@ -11,6 +12,7 @@ public class PlayerAirState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        jumpOnce = false;
     }
 
     public override void Exit()
@@ -21,6 +23,8 @@ public class PlayerAirState : PlayerState
     public override void Update()
     {
         base.Update();
+        
+        player.animator.SetFloat("yVelocity",rb.velocity.y);
 
         player.DashController();
         
@@ -29,6 +33,12 @@ public class PlayerAirState : PlayerState
         
         if (Input.GetKeyDown(KeyCode.Mouse0) && player.canAirAttack)
             playerStateMachine.ChangeState(player.airAttackState);
+        
+        if (Input.GetKeyDown(KeyCode.Space) && !jumpOnce)
+        {
+            rb.velocity = new Vector2(0, player.jumpForce);
+            jumpOnce = true;
+        }
         
         if(player.IsWallDetected())
             playerStateMachine.ChangeState(player.wallSlideState);

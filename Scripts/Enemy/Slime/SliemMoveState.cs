@@ -15,19 +15,16 @@ public class SlimeMoveState : EnemyState
     {
         base.Enter();
 
-        startTimer = 1f;
         slime.SetVelocity(slime.moveSpeed * slime.facingDir,slime.jumpForce);
     }
 
     public override void Update()
     {
         base.Update();
-
-        startTimer -= Time.deltaTime;
         
         slime.animator.SetFloat("yVelocity",rb.velocity.y);
         
-        if((rb.velocity.y == 0) && triggerCalled || slime.IsWallDetected())
+        if (triggerCalled && slime.IsGroundDetected())
             enemyStateMachine.ChangeState(slime.idleState);
     }
 

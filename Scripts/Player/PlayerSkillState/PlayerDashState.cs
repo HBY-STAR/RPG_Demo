@@ -12,12 +12,15 @@ public class PlayerDashState : PlayerState
     {
         base.Enter();
         
+        player.dashGhostEffect.Play();
         startTimer = player.dashDuration;
     }
 
     public override void Exit()
     {
         base.Exit();
+        
+        player.dashGhostEffect.Stop();
     }
 
     public override void Update()

@@ -77,6 +77,8 @@ public class Slime : Enemy
 
     protected override void OnDrawGizmos()
     {
+        base.OnDrawGizmos();
+        
         Gizmos.color = Color.cyan;
 
 
@@ -98,4 +100,6 @@ public class Slime : Enemy
         cd.enabled = false;
         stateMachine.ChangeState(idleState);
     }
+    
+   
 }

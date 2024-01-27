@@ -25,7 +25,7 @@ public class Player : Entity
     [Header("Dash info")] public float dashSpeed = 25f;
     public float dashDuration = 0.2f;
     public float dashDir;
-
+    public ParticleSystem dashGhostEffect;
     
     #region States
     public PlayerStateMachine stateMachine { get; private set; }
@@ -90,7 +90,7 @@ public class Player : Entity
                 shurikan_image = childBone;
             }
         }
-
+        
         shurikan_image_sprite_render = shurikan_image.GetComponent<SpriteRenderer>();
         swordTrailRenderer = sword.GetComponentInChildren<TrailRenderer>();
 
@@ -102,6 +102,10 @@ public class Player : Entity
         EnableShurikanImage();
         UnableSwordTrail();
         UnableShurikanTrail();
+        
+        // dash ghost
+        dashGhostEffect = GetComponent<ParticleSystem>();
+        dashGhostEffect.Stop();       
 
         stateMachine.Initialize(idleState);
     }
