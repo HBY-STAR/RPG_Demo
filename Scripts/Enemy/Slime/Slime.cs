@@ -89,16 +89,18 @@ public class Slime : Enemy
     public override void OnDamage()
     {
         base.OnDamage();
-
-        if (stats.currentHeath < 0)
-            Die();
         stateMachine.ChangeState(hitState);
+
+        if (stats.currentHeath <= 0)
+        {
+            Die();
+        }
     }
 
-    private void Die()
+    protected override void Die()
     {
         cd.enabled = false;
-        stateMachine.ChangeState(idleState);
+        rb.velocity = new Vector2(0, -10f);
     }
     
    

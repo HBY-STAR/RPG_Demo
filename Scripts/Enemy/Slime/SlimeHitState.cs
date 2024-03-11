@@ -15,9 +15,9 @@ public class SlimeHitState : EnemyState
     {
         base.Enter();
 
-        rb.velocity = new Vector2(slime.moveSpeed * slime.facingDir * (-1)/3f,slime.jumpForce/1.5f);
+        rb.velocity = new Vector2(slime.moveSpeed * slime.facingDir * (-1),slime.jumpForce/1.5f);
 
-        startTimer = 1.5f;
+        startTimer = 0.5f;
     }
 
     public override void Update()

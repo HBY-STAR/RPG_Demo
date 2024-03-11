@@ -33,4 +33,9 @@ public class Enemy : Entity
     public virtual void OnDamage()
     {
     }
+
+    protected virtual void Die()
+    {
+        
+    }
 }
