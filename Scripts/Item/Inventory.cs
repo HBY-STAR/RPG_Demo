@@ -1,0 +1,142 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
+public class Inventory : MonoBehaviour
+{
+    public static Inventory instance;
+
+    public List<InventoryItem> inventory;
+
+    public Dictionary<ItemData, InventoryItem> inventoryDictionary;
+
+    [Header("Item effects")]
+    [SerializeField] private int hpUp;
+    [SerializeField] private int attackUp;
+
+    [Header("Inventory UI")]
+    [SerializeField] private Transform inventorySlotParent;
+    [SerializeField] private int maxItem;
+    private UI_ItemSlot[] itemSlots;
+
+    private void Awake()
+    {
+        if (instance != null)
+            Destroy(instance.gameObject);
+        else
+            instance = this;
+    }
+
+    private void Start()
+    {
+        inventory = new List<InventoryItem>();
+        inventoryDictionary = new Dictionary<ItemData, InventoryItem>();
+
+        itemSlots = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            foreach (var item in inventory)
+            {
+                if(item.data.itemName == "HP_cure")
+                {
+                    if(item.stackSize > 0)
+                    {
+                        item.RemoveStack();
+                        PlayerManager.Instance.player.stats.Cure(20);
+                        if(item.stackSize <= 0)
+                        {
+                            inventory.Remove(item);
+                            inventoryDictionary.Remove(item.data);
+                            break;
+                        }
+                    }
+                }
+            }
+            UpdateSlotUI();
+        }
+    }
+
+    private void UpdateSlotUI()
+    {
+        for(int i = 0; i < inventory.Count; i++)
+        {
+            itemSlots[i].UpdateSlot(inventory[i]);
+        }
+        for(int i = inventory.Count; i < itemSlots.Length; i++)
+        {
+            itemSlots[i].UpdateSlot(null);
+        }
+    }
+
+    public void AddItem(ItemData item)
+    {
+        if(inventory.Count >= maxItem)
+        {
+            return;
+        }
+
+        if(inventoryDictionary.TryGetValue(item, out InventoryItem inventoryItem))
+        {
+            inventoryItem.AddStack();
+        }
+        else
+        {
+            InventoryItem newItem = new InventoryItem(item);
+            inventory.Add(newItem);
+            inventoryDictionary.Add(item, newItem);
+        }
+
+        UpdateSlotUI();
+    }
+
+    public void RemoveItem(ItemData item)
+    {
+        if(inventory.Count <= 0)
+        {
+            return;
+        }
+
+        if(inventoryDictionary.TryGetValue(item, out InventoryItem inventoryItem))
+        {
+            inventoryItem.RemoveStack();
+            if(inventoryItem.stackSize <= 0)
+            {
+                inventory.Remove(inventoryItem);
+                inventoryDictionary.Remove(item);
+            }
+        }
+
+        UpdateSlotUI();
+    }
+
+    public void UpdatePlayerStats(ItemData item, bool add)
+    {
+        if (add)
+        {
+            if(item.itemName == "HP_up")
+            {
+                PlayerManager.Instance.player.stats.maxHeath.AddModifier(hpUp);
+            }
+            else if(item.itemName == "Attack_up")
+            {
+                PlayerManager.Instance.player.stats.damage.AddModifier(attackUp);
+            }
+        }else
+        {
+            if (item.itemName == "HP_up")
+            {
+                PlayerManager.Instance.player.stats.maxHeath.RemoveModifier(hpUp);
+            }
+            else if (item.itemName == "Attack_up")
+            {
+                PlayerManager.Instance.player.stats.damage.RemoveModifier(attackUp);
+            }
+        }
+    }
+}
