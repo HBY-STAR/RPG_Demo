@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: HP_cure
   m_EditorClassIdentifier: 
   itemName: HP_cure
-  icon: {fileID: 21300000, guid: cb838a3e43f0ace42be599fdab455b35, type: 3}
+  icon: {fileID: 21300000, guid: 111368abff32ab2488d49ad372c4efee, type: 3}
