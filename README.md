@@ -1,3 +1,5 @@
 # RPG Demo
 
-This repo includes a 2D RPG demo assets developed using unity.
+This repo includes a 2D RPG demo.
+
+Made with Unity.
