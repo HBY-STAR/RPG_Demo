@@ -30,15 +30,9 @@ public class Inventory : MonoBehaviour, ISaveManager
             Destroy(instance.gameObject);
         else
             instance = this;
-    }
-
-    private void Start()
-    {
+        itemSlots = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         inventory = new List<InventoryItem>();
         inventoryDictionary = new Dictionary<ItemData, InventoryItem>();
-
-        itemSlots = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
-
         loadedItems = new List<InventoryItem>();
     }
 
@@ -97,7 +91,7 @@ public class Inventory : MonoBehaviour, ISaveManager
             return;
         }
 
-        if(inventoryDictionary.TryGetValue(item, out InventoryItem inventoryItem))
+        if(item && inventoryDictionary.TryGetValue(item, out InventoryItem inventoryItem))
         {
             inventoryItem.AddStack();
         }

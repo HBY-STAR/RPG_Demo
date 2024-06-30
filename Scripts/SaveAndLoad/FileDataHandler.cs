@@ -25,14 +25,13 @@ public class FileDataHandler
 
             string dataToStore = JsonUtility.ToJson(gameData);
 
-            using(FileStream fs = new FileStream(fullPath, FileMode.Create))
+            using (FileStream fs = new FileStream(fullPath, FileMode.Create))
             {
-                using(StreamWriter writer = new StreamWriter(fs))
+                using (StreamWriter writer = new StreamWriter(fs))
                 {
                     writer.Write(dataToStore);
                 }
             }
-
         }
         catch (Exception e)
         {
@@ -67,6 +66,23 @@ public class FileDataHandler
         {
             Debug.LogError("Error load data: " + e.Message);
             return null;
+        }
+    }
+
+    public void Delete()
+    {
+        string fullPath = Path.Combine(dataDirPath, dataFileName);
+
+        try
+        {
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error delete data: " + e.Message);
         }
     }
 }
