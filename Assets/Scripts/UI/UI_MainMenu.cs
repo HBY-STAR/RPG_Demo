@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class UI_MainMenu : MonoBehaviour
 {
     [SerializeField] private string gameSceneName = "GameScene";
-    [SerializeField] private string settingsSceneName = "SettingsScene";
+    //[SerializeField] private string settingsSceneName = "SettingsScene";
     [SerializeField] private GameObject continueButton;
 
     private void Start()

@@ -21,12 +21,16 @@ public class CharacterStats : MonoBehaviour
         currentHeath -= _damage;
         if(OnHealthChanged != null)
             OnHealthChanged();
+        CheckDie();
     }
 
-    protected virtual void Die()
+    protected virtual void CheckDie()
     {
-         if(currentHeath<0)
-             Debug.Log("I'm Die.");
+        if (currentHeath <= 0)
+        {
+            Destroy(gameObject, 0.1f);
+        }
+
     }
 
     public virtual void Cure(int _cure)
